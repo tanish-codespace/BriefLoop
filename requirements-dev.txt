@@ -1,0 +1,5 @@
+# Dev/test-only dependencies - not needed to run the app itself.
+-r requirements.txt
+pytest==8.3.4
+pytest-mock==3.14.0
+ruff==0.8.4

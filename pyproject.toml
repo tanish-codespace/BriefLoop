@@ -1,0 +1,9 @@
+[tool.ruff]
+line-length = 160  # app.py embeds CSS/HTML strings that run long; not worth wrapping
+exclude = ["venv", "__pycache__"]
+
+[tool.ruff.lint]
+# Keep the default set (E/F) - correctness + style basics. Not turning on
+# the stricter opinionated rule families (import sorting, docstring
+# conventions, etc.) since this is a small demo project, not a library.
+select = ["E", "F"]

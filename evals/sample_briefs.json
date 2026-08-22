@@ -1,0 +1,22 @@
+[
+  {
+    "id": "fitness-app-launch",
+    "brief": "Plan a launch campaign for a budget fitness tracking app targeting college students. Budget is $2,000."
+  },
+  {
+    "id": "saas-b2b-webinar",
+    "brief": "Plan a campaign to drive signups for a B2B project management SaaS webinar aimed at engineering managers at mid-size companies."
+  },
+  {
+    "id": "local-coffee-shop",
+    "brief": "Plan a local marketing campaign for a new independent coffee shop opening in a college town, budget under $500."
+  },
+  {
+    "id": "ecommerce-holiday-sale",
+    "brief": "Plan a holiday sale campaign for a direct-to-consumer sustainable sneaker brand, focused on Instagram and email."
+  },
+  {
+    "id": "nonprofit-donor-drive",
+    "brief": "Plan a year-end donor drive campaign for a small environmental nonprofit with a volunteer-run marketing team and no paid ad budget."
+  }
+]
