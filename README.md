@@ -1,15 +1,12 @@
 # Multi-Agent Marketing Campaign Planner
 
-![CI](https://github.com/USERNAME/marketing-agents/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/tanish-codespace/BriefLoop/actions/workflows/ci.yml/badge.svg)
 
 A small team of specialized LLM agents that plan a marketing campaign
 end-to-end, with a genuine self-correcting feedback loop — not just a
 scripted linear chain. Built with **LangGraph**, tested with **pytest**
-(23 tests, fully mocked — no API keys needed to run CI), and shippable via
+(26 tests, fully mocked — no API keys needed to run CI), and shippable via
 **Docker**.
-
-> Update the badge URL above (`USERNAME/marketing-agents`) once this is
-> pushed to your own GitHub repo.
 
 ## Architecture
 
@@ -122,7 +119,7 @@ docker run --env-file .env -p 8501:8501 marketing-agents
 
 ```bash
 pip install -r requirements-dev.txt
-pytest -v          # 23 tests, all mocked — no API keys required
+pytest -v          # 26 tests, all mocked — no API keys required
 ruff check .        # lint
 ```
 
@@ -213,7 +210,7 @@ A couple of framings that map directly to what's actually implemented here
 - *"Built a multi-agent marketing planning pipeline (LangGraph) with a
   programmatic critic→writer feedback loop, an optional human-in-the-loop
   approval gate via checkpointed interrupts, and a budget-aware planning
-  agent; covered by a 23-test mocked pytest suite running in CI and a
+  agent; covered by a 26-test mocked pytest suite running in CI and a
   standalone evaluation harness measuring draft-quality improvement across
   revision rounds."*
 - *"Designed the control flow so revision routing is decided by parsed,
