@@ -198,7 +198,7 @@ h1, h2, h3 {
 st.markdown('<div class="console-eyebrow">Multi-Agent Pipeline</div>', unsafe_allow_html=True)
 st.title("Campaign Planner")
 st.markdown(
-    '<div class="console-subtitle">Researcher → Writer → Critic → Editor — '
+    '<div class="console-subtitle">Researcher → Budget Analyst → Writer → Critic → Editor — '
     'with a real critic-to-writer feedback loop, not a scripted chain.</div>',
     unsafe_allow_html=True,
 )
@@ -273,7 +273,9 @@ run_button = st.button("Run agent team", type="primary")
 if "run" not in st.session_state:
     st.session_state.run = None  # holds {app, config, final_state, awaiting_approval}
 
-if run_button and brief.strip():
+just_streamed = bool(run_button and brief.strip())  # did the live pipeline run in *this* script execution?
+
+if just_streamed:
     graph_app = build_graph(require_approval=require_approval)
     config = {"configurable": {"thread_id": str(uuid.uuid4())}} if require_approval else None
     initial_state: CampaignState = {
@@ -325,6 +327,8 @@ if run_button and brief.strip():
         # the graph is paused at the interrupt right before the Editor node.
         "awaiting_approval": bool(config) and not (final_state or {}).get("final_output"),
     }
+elif run_button:
+    st.warning("Please enter a campaign brief first.")
 
 run = st.session_state.run
 
@@ -360,10 +364,16 @@ final_state = run["final_state"] if run else None
 
 if run and not run["awaiting_approval"]:
     if final_state and final_state.get("final_output"):
-        # mark pipeline fully complete (fresh element - the live `pipeline_slot`
-        # placeholder only exists during the run_button branch above; on a
-        # rerun triggered by the approve/reject buttons it's gone)
-        st.markdown(
+        # Mark the pipeline fully complete (the live loop's last render still
+        # shows the Editor as "active" rather than "done" - there's no next
+        # step to flip it). Reuse the live `pipeline_slot` placeholder when
+        # it exists in this same script execution (the common case) so this
+        # updates in place instead of drawing a second tracker underneath
+        # it; on a rerun triggered by the approve/reject buttons the whole
+        # script starts fresh with no earlier placeholder, so fall back to a
+        # plain element.
+        pipeline_target = pipeline_slot if just_streamed else st
+        pipeline_target.markdown(
             render_pipeline([a[0] for a in AGENTS], None, final_state.get("revision_count", 1)),
             unsafe_allow_html=True,
         )
@@ -412,6 +422,3 @@ if run and not run["awaiting_approval"]:
                 st.markdown(f'<div class="log-card"><div class="log-agent">Round {i}</div><div class="log-msg">{md(c)}</div></div>', unsafe_allow_html=True)
     else:
         st.error("Something went wrong — no final output produced.")
-
-elif run_button:
-    st.warning("Please enter a campaign brief first.")
