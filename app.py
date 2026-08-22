@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 
 from graph import build_graph
 from state import CampaignState
+from formatting import escape_markdown_dollars as md
 
 load_dotenv()
 
@@ -312,7 +313,7 @@ if run_button and brief.strip():
                 log_html += f'''
                 <div class="log-card">
                     <div class="log-agent">{icon} {entry["agent"]}</div>
-                    <div class="log-msg">{entry["message"]}</div>
+                    <div class="log-msg">{md(entry["message"])}</div>
                 </div>'''
             log_slot.markdown(log_html, unsafe_allow_html=True)
 
@@ -340,7 +341,7 @@ if run and run["awaiting_approval"]:
         "the draft as-is."
     )
     with st.expander("Draft awaiting approval", expanded=True):
-        st.markdown(fs.get("draft", ""))
+        st.markdown(md(fs.get("draft", "")))
 
     col1, col2 = st.columns(2)
     if col1.button("✅ Approve — run Editor polish", type="primary"):
@@ -386,7 +387,7 @@ if run and not run["awaiting_approval"]:
         ])
 
         with tab1:
-            st.markdown(final_state["final_output"])
+            st.markdown(md(final_state["final_output"]))
             st.download_button(
                 "Download as Markdown",
                 final_state["final_output"],
@@ -395,20 +396,20 @@ if run and not run["awaiting_approval"]:
             )
 
         with tab2:
-            st.markdown(final_state.get("research_notes", ""))
+            st.markdown(md(final_state.get("research_notes", "")))
             st.markdown("**Sources**")
             for src in final_state.get("sources", []):
                 st.markdown(f"- {src}")
 
         with tab3:
-            st.markdown(final_state.get("budget_notes", "No budget notes produced."))
+            st.markdown(md(final_state.get("budget_notes", "No budget notes produced.")))
 
         with tab4:
             history = final_state.get("critique_history", [])
             if not history:
                 st.info("No revisions needed — first draft passed the rubric.")
             for i, c in enumerate(history, 1):
-                st.markdown(f'<div class="log-card"><div class="log-agent">Round {i}</div><div class="log-msg">{c}</div></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="log-card"><div class="log-agent">Round {i}</div><div class="log-msg">{md(c)}</div></div>', unsafe_allow_html=True)
     else:
         st.error("Something went wrong — no final output produced.")
 
